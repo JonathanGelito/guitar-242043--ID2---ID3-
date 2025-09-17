@@ -12,7 +12,7 @@ class RingBuffer:
         self.MAX_CAP = capacity
         self._front = 0
         self._rear =  0
-        self.buffer = list(range(0,capacity))
+        self.buffer = [None for _ in range(capacity)]
 
 
     def size(self) -> int:
@@ -48,6 +48,7 @@ class RingBuffer:
         if(self._rear-self._front<self.MAX_CAP):
             self.buffer[self._rear%self.MAX_CAP]=x
             self._rear+=1    
+            
         else:
             raise RingBufferFull
 

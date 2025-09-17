@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from guitarstring import GuitarString
 from stdaudio import play_sample
 import stdkeys
@@ -9,8 +7,10 @@ if __name__ == '__main__':
     stdkeys.create_window()
 
     CONCERT_A = 440
+    CONCERT_B = 220
     CONCERT_C = CONCERT_A * (1.059463**3)
     string_A = GuitarString(CONCERT_A)
+    string_B = GuitarString(CONCERT_B)
     string_C = GuitarString(CONCERT_C)
 
     n_iters = 0
@@ -30,13 +30,17 @@ if __name__ == '__main__':
                 string_A.pluck()
             elif key == 'c':
                 string_C.pluck()
+        string_A.pluck()
+        string_B.pluck()
 
         # compute the superposition of samples
         # sample = string_A.sample() + string_C.sample() +
-        sample = string_A.sample() + string_C.sample()
+        sample = string_A.sample() + string_B.sample()
+
         # play the sample on standard audio
         play_sample(sample)
 
         # advance the simulation of each guitar string by one step
         string_A.tick()
+        string_B.tick()
         string_C.tick()

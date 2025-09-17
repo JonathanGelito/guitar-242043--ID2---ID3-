@@ -37,7 +37,12 @@ class GuitarString:
         Set the buffer to white noise
         '''
         # TO-DO: implement this
-        return random.uniform(-0.5,0.5)
+        self.buffer._rear=0
+        self.buffer._front=0
+        for _ in range(0,self.capacity-1):
+            self.buffer.enqueue(random.uniform(-0.5,0.5))
+
+
     def tick(self):
         '''
         Advance the simulation one time step by applying the Karplus--Strong update
@@ -45,8 +50,14 @@ class GuitarString:
         # TO-DO: implement this
         # Step 1: delete sample at front of ring buffer
         # Step 1: delete sample at front of ring buffer
-        t0=self.buffer.dequeue()
-        t1=self.buffer.peek()
+        try:
+            t0=self.buffer.dequeue()
+        except RingBufferEmpty:
+            t0=0
+        try: 
+            t1=self.buffer.peek()
+        except RingBufferEmpty:
+            t1=0
 
         return self.buffer.enqueue(0.996*(t0+t1)/2)
 
@@ -57,7 +68,13 @@ class GuitarString:
         Return the current sample
         '''
         # TO-DO: implement this
-        return self.buffer.peek()
+
+        try: 
+            x=self.buffer.peek()
+        except RingBufferEmpty:
+            x=0
+        return x
+        
 
     def time(self) -> int:
         '''

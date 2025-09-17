@@ -26,7 +26,6 @@ class GuitarStringTester(unittest.TestCase):
         for __ in range(stg.buffer.size()):
             y = stg.buffer.dequeue()
         self.assertAlmostEqual(y, 0.92815942097)
-    
 
 
 if __name__ == '__main__':

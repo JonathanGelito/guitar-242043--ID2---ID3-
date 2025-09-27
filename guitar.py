@@ -1,3 +1,19 @@
+# Jonathan "JG" Gelito, Matheus Rasay, E. "Mikey" de los Reyes
+# 242043, 243780, 241438
+# September 27, 2025
+
+# I have not discussed the Python language code in my program 
+# with anyone other than my instructor or the teaching assistants 
+# assigned to this course.
+
+# I have not used Python language code obtained from another student, 
+# or any other unauthorized source, either modified or unmodified.
+
+# If any Python language code or documentation used in my program 
+# was obtained from another source, such as a textbook or website, 
+# that has been clearly noted with a proper citation in the comments 
+# of my program.
+
 from guitarstring import GuitarString
 from stdaudio import play_sample
 import stdkeys
@@ -30,7 +46,7 @@ if __name__ == '__main__':
             #currently_playing.clear() 
             #sample = 0.0
             #Assign a key variable
-            key = stdkeys.next_key_typed()
+            key = stdkeys.next_key_typed().lower()
             #Make it so that it gets the index of the key, and plucks the correct
             #string_keys item based on the index given.
             if key in list(keyboard): #Prevents crashing if another key is pressed

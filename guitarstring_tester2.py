@@ -1,33 +1,43 @@
 #!/usr/bin/env python3
 
-from guitarstring import *
-import unittest
-from math import ceil
+#!/usr/bin/env python3
 
-SAMP_RATE = 44100
-DECAY = 0.996
-
-class GuitarStringTester(unittest.TestCase):
-    def gstest_00_check_buffer_size_440(self):
-        stg = GuitarString(440)
-        self.assertEqual(stg.capacity, ceil(SAMP_RATE/440))
-
-    def gstest_01_single_tick(self):
-        stg = GuitarString.make_from_array([20, 10, 0, 0, 0, 0, 0, 0])
-        stg.tick()
-        self.assertEqual(stg.sample(), 10)
-
-    def gstest_02_more_ticks(self):
-        stg = GuitarString.make_from_array([1, 1, 1, 1, 1, 1])
-        for _ in range(100):
-            stg.tick()
-        x = stg.sample()
-        self.assertEqual(stg.time(), 100)
-        for __ in range(stg.buffer.size()):
-            y = stg.buffer.dequeue()
-        self.assertAlmostEqual(y, 0.92815942097)
-
+from guitarstring import GuitarString
+from stdaudio import play_sample
+import stdkeys
 
 if __name__ == '__main__':
-    unittest.defaultTestLoader.testMethodPrefix = 'gstest'
-    unittest.main()
+    # initialize window
+    stdkeys.create_window()
+
+    CONCERT_A = 440
+    CONCERT_C = CONCERT_A * (1.059463**3)
+    string_A = GuitarString(CONCERT_A)
+    string_C = GuitarString(CONCERT_C)
+
+    n_iters = 0
+    while True:
+        # it turns out that the bottleneck is in polling for key events
+        # for every iteration, so we'll do it less often, say every 
+        # 1000 or so iterations
+        if n_iters == 1000:
+            stdkeys.poll()
+            n_iters = 0
+        n_iters += 1
+
+        # check if the user has typed a key; if so, process it
+        if stdkeys.has_next_key_typed():
+            key = stdkeys.next_key_typed()
+            if key == 'a':
+                string_A.pluck()
+            elif key == 'c':
+                string_C.pluck()
+
+        # compute the superposition of samples
+        sample = string_A.sample() + string_C.sample()
+        # play the sample on standard audio
+        play_sample(sample)
+
+        # advance the simulation of each guitar string by one step
+        string_A.tick()
+        string_C.tick()

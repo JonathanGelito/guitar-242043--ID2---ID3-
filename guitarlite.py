@@ -32,7 +32,6 @@ if __name__ == '__main__':
                 string_C.pluck()
 
         # compute the superposition of samples
-        # sample = string_A.sample() + string_C.sample() +
         sample = string_A.sample() + string_C.sample()
         # play the sample on standard audio
         play_sample(sample)

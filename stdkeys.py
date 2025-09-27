@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 
 # Default Sizes and Values
 _BORDER = 0

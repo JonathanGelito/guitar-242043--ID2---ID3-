@@ -7,6 +7,7 @@ from functools import wraps
 
 SAMP_RATE = 44100
 
+
 class GuitarString:
     def __init__(self, frequency: float):
         '''
@@ -17,7 +18,7 @@ class GuitarString:
         # TO-DO: implement this
         self.capacity = math.ceil(44100/frequency) # TO-DO: compute the max capacity of the ring buffer based on the frequency
         self.buffer = RingBuffer(self.capacity)  # TO-DO: construct the ring buffer object
-
+        self.TICKs = 0
     @classmethod
     def make_from_array(cls, init: list[int]):
         '''
@@ -37,9 +38,12 @@ class GuitarString:
         Set the buffer to white noise
         '''
         # TO-DO: implement this
-        self.buffer._rear=0
+        for _ in range(self.buffer.size()):
+            self.buffer.dequeue()
         self.buffer._front=0
-        for _ in range(0,self.capacity-1):
+        self.buffer._rear=0
+        self.TICKs=0
+        for _ in range(self.capacity):
             self.buffer.enqueue(random.uniform(-0.5,0.5))
 
 
@@ -58,7 +62,7 @@ class GuitarString:
             t1=self.buffer.peek()
         except RingBufferEmpty:
             t1=0
-
+        self.TICKs +=1
         return self.buffer.enqueue(0.996*(t0+t1)/2)
 
 
@@ -68,7 +72,6 @@ class GuitarString:
         Return the current sample
         '''
         # TO-DO: implement this
-
         try: 
             x=self.buffer.peek()
         except RingBufferEmpty:
@@ -83,7 +86,7 @@ class GuitarString:
         # TO-DO: implement this
 
         # I wiil implement this later.
-        return self.buffer._front
+        return self.TICKs
 
 
         

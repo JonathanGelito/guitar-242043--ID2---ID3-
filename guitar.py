@@ -38,10 +38,6 @@ if __name__ == '__main__':
                     currently_playing.remove(string_keys[list(keyboard).index(key)])
                 string_keys[list(keyboard).index(key)].pluck()
                 currently_playing.append(string_keys[list(keyboard).index(key)])
-        
-
-        
-        
 
         # compute the superposition of samples
         sample=0.0
